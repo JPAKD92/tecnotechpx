@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#0a0e1a">
+<title>TECNOTECH DIÉSEL — Presupuestos</title>
+<link rel="stylesheet" href="styles.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<!-- ====== HEADER ====== -->
+<header class="app-header">
+  <div class="brand">
+    <span id="brandLogo" class="brand-logo"></span>
+    <div class="brand-text">
+      <strong>TECNOTECH</strong><span>DIÉSEL</span>
+    </div>
+  </div>
+  <div class="budget-badge">
+    <small>Presupuesto N°</small>
+    <span id="budgetNumber">—</span>
+  </div>
+</header>
+
+<!-- ====== PROGRESS ====== -->
+<div class="progress-wrap">
+  <div class="progress-bar"><div id="progressFill" class="progress-fill"></div></div>
+  <div class="progress-label"><span id="stepLabel">Paso 1 de 7</span> · <span id="stepTitle">Datos del cliente</span></div>
+</div>
+
+<!-- ====== WIZARD ====== -->
+<main class="wizard">
+
+  <!-- STEP 1: Cliente -->
+  <section class="step active" data-step="1">
+    <h2>👤 Datos del cliente</h2>
+    <label>Nombre del cliente
+      <input type="text" id="clienteNombre" placeholder="Ej: Juan Pérez" autocomplete="off">
+    </label>
+    <label>Teléfono
+      <input type="tel" id="clienteTelefono" placeholder="Ej: 11 2345-6789" autocomplete="off">
+    </label>
+  </section>
+
+  <!-- STEP 2: Vehículo -->
+  <section class="step" data-step="2">
+    <h2>🚗 Datos del vehículo</h2>
+    <label>Marca
+      <input type="text" id="vehMarca" placeholder="Ej: Ford" autocomplete="off">
+    </label>
+    <label>Modelo
+      <input type="text" id="vehModelo" placeholder="Ej: Ranger" autocomplete="off">
+    </label>
+    <div class="row">
+      <label>Año
+        <input type="text" inputmode="numeric" id="vehAnio" placeholder="Ej: 2018" autocomplete="off">
+      </label>
+      <label>Patente
+        <input type="text" id="vehPatente" placeholder="Ej: AB123CD" autocomplete="off" style="text-transform:uppercase">
+      </label>
+    </div>
+  </section>
+
+  <!-- STEP 3: Trabajo solicitado -->
+  <section class="step" data-step="3">
+    <h2>📝 Trabajo solicitado</h2>
+    <label>Describí lo que pide el cliente
+      <textarea id="trabajoSolicitado" rows="7" placeholder="Ej: El vehículo pierde potencia y enciende la luz de motor..."></textarea>
+    </label>
+  </section>
+
+  <!-- STEP 4: Trabajo a realizar -->
+  <section class="step" data-step="4">
+    <h2>🔧 Trabajo a realizar</h2>
+    <label>Detalle de los trabajos a ejecutar
+      <textarea id="trabajoRealizar" rows="7" placeholder="Ej: Diagnóstico de inyectores, reparación de bomba inyectora..."></textarea>
+    </label>
+  </section>
+
+  <!-- STEP 5: Observaciones -->
+  <section class="step" data-step="5">
+    <h2>💬 Observaciones</h2>
+    <label>Notas adicionales (opcional)
+      <textarea id="observaciones" rows="7" placeholder="Ej: Se recomienda cambio de filtros en próximo service..."></textarea>
+    </label>
+  </section>
+
+  <!-- STEP 6: Materiales y mano de obra -->
+  <section class="step" data-step="6">
+    <h2>🧰 Materiales y mano de obra</h2>
+    <p class="hint">Agregá los conceptos. No se incluyen precios ni horas.</p>
+    <div id="itemsList" class="items-list"></div>
+    <button type="button" id="addItemBtn" class="btn btn-add">➕ Agregar ítem</button>
+    <label class="total-field">Monto total del presupuesto
+      <div class="total-input">
+        <span>$</span>
+        <input type="text" inputmode="decimal" id="montoTotal" placeholder="Ej: 150.000" autocomplete="off">
+      </div>
+    </label>
+  </section>
+
+  <!-- STEP 7: Daños localizados -->
+  <section class="step" data-step="7">
+    <h2>🚨 Daños localizados</h2>
+    <p class="hint">Tocá las zonas dañadas del vehículo.</p>
+    <div id="vehicleDiagram" class="vehicle-diagram"></div>
+    <div id="zonesSummary" class="zones-summary"></div>
+    <label>Observaciones de daños
+      <textarea id="danosObs" rows="4" placeholder="Ej: Abolladura en puerta delantera izquierda..."></textarea>
+    </label>
+  </section>
+
+</main>
+
+<!-- ====== NAV ====== -->
+<nav class="wizard-nav">
+  <button type="button" id="prevBtn" class="btn btn-ghost">← Atrás</button>
+  <button type="button" id="nextBtn" class="btn btn-primary">Siguiente →</button>
+  <button type="button" id="genPdfBtn" class="btn btn-primary hidden">📄 Generar PDF</button>
+</nav>
+
+<!-- ====== FINAL ACTIONS (shown after step 7) ====== -->
+<div id="finalActions" class="final-actions hidden">
+  <button type="button" id="genPdfBtn2" class="btn btn-primary">📄 Generar PDF</button>
+  <button type="button" id="whatsappBtn" class="btn btn-whatsapp">🟢 Compartir por WhatsApp</button>
+  <button type="button" id="newBudgetBtn" class="btn btn-ghost">🆕 Nuevo Presupuesto</button>
+</div>
+
+<!-- ====== TOAST ====== -->
+<div id="toast" class="toast"></div>
+
+<!-- CDN libs -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
